@@ -1,39 +1,94 @@
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
-    //hash function to get the md5 hash
-    public static String getMd5Hash(String input)
-    {
-        try
-        {
-            //static getInstance() method is called with hashing MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            //calculating message digest of an input that return array of byte
-            byte[] messageDigest = md.digest(input.getBytes());
-            //converting byte array into signum representation
-            BigInteger no = new BigInteger(1, messageDigest);
-            //converting message digest into hex value
-            String hashtext = no.toString(16);
-            while (hashtext.length() < 32)
-            {
-                hashtext = "0" + hashtext;
-            }
-            return hashtext;
-        }
-        //for specifying wrong message digest algorithms
-        catch (NoSuchAlgorithmException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        System.out.println("Enter the string you'd like to encrypt.");
-        Scanner sc= new Scanner(System.in);
-        String inputString = sc.nextLine();
-        System.out.println("HashCode Generated for the string is: " + getMd5Hash(inputString));
 
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        // Input strings to hash and check for collisions
+        String input1 = "Hi";
+        String input2 = "See";
+        String input3 = "There";
+        String input4 = "Hi";
+
+        // Hashes map to store hash values and their corresponding input strings
+        Map<String, String> hashes = new HashMap<>();
+
+        // Get instance of MessageDigest with MD5 algorithm
+        MessageDigest md = MessageDigest.getInstance("MD5");
+
+        // Compute hash value of first input string
+        byte[] mdBytes1 = md.digest(input1.getBytes());
+
+        // Convert byte array representation of hash value to hexadecimal string
+        String mdString1 = new BigInteger(1, mdBytes1).toString(16);
+
+        // Store hash value and input string in hashes map
+        hashes.put(mdString1, input1);
+
+        // Print MD5 hash value of first input string
+        System.out.println("MD5 Hash of '" + input1 + "' is: " + mdString1);
+
+        // Compute hash value of second input string
+        byte[] mdBytes2 = md.digest(input2.getBytes());
+
+        // Convert byte array representation of hash value to hexadecimal string
+        String mdString2 = new BigInteger(1, mdBytes2).toString(16);
+
+        // Check if hash value already exists in hashes map
+        if (hashes.containsKey(mdString2)) {
+            String collisionInput = hashes.get(mdString2);
+            System.out.println("Collision found between '" + input2 + "' and '" + collisionInput + "'");
+        } else {
+            // Store hash value and input string in hashes map
+            hashes.put(mdString2, input2);
+
+            // Print MD5 hash value of second input string
+            System.out.println("MD5 Hash of '" + input2 + "' is: " + mdString2);
+
+            System.out.println("No collision found");
+        }
+
+        // Compute hash value of third input string
+        byte[] mdBytes3 = md.digest(input3.getBytes());
+
+        // Convert byte array representation of hash value to hexadecimal string
+        String mdString3 = new BigInteger(1, mdBytes3).toString(16);
+
+        // Check if hash value already exists in hashes map
+        if (hashes.containsKey(mdString3)) {
+            String collisionInput = hashes.get(mdString3);
+            System.out.println("Collision found between '" + input3 + "' and '" + collisionInput + "'");
+        } else {
+            // Store hash value and input string in hashes map
+            hashes.put(mdString3, input3);
+
+            // Print MD5 hash value of third input string
+            System.out.println("MD5 Hash of '" + input3 + "' is: " + mdString3);
+
+            System.out.println("No collision found");
+        }
+
+        // Compute hash value of fourth input string
+        byte[] mdBytes4 = md.digest(input4.getBytes());
+
+        // Convert byte array representation of hash value to hexadecimal string
+        String mdString4 = new BigInteger(1, mdBytes4).toString(16);
+
+        // Check if hash value already exists in hashes map
+        if (hashes.containsKey(mdString4)) {
+            String collisionInput = hashes.get(mdString4);
+            System.out.println("Collision found between '" + input4 + "' and '" + collisionInput + "'");
+        }else {
+            // Store hash value and input string in hashes map
+            hashes.put(mdString3, input4);
+
+            // Print MD5 hash value of third input string
+            System.out.println("MD5 Hash of '" + input4 + "' is: " + mdString4);
+
+            System.out.println("No collision found");
+        }
     }
 }
